@@ -1,19 +1,26 @@
-dni= "55555555F"
-dni2= "53768462M"
-palabra='TRWAGMYFPDXBNJZSQVHLCKE'
-#print('La letra del DNI es: ', palabra[DNI%23])
+class User:
+      
+    def __init__(self, name, total_money, checking_account = False):
+        self.name = name
+        self.total_money = int(total_money)
+        self.checking_account = checking_account
 
+    def withdraw(self, amount_to_withdraw):
+        if self.total_money < amount_to_withdraw:
+            raise ValueError("No dispone de tanta cantidad.")
+        else:
+            self.total_money = self.total_money - int(amount_to_withdraw)
+            return f"{self.name} tiene {self.total_money}."
+        
+    
+    def transfer_money(self, user_giving, amount_to_transfer):
+        if user_giving.total_money < amount_to_transfer or user_giving.checking_account is False:
+            raise ValueError("El usuario no dispone de saldo suficiente para hacer la transferencia o su perfil no está activado.")
+        else:
+            user_giving.withdraw(amount_to_transfer)
+            self.add_cash(amount_to_transfer)
+            return f"{self.name} tiene {self.total_money} y {user_giving.name} tiene {user_giving.total_money}."
 
-def valid_dni(dni):
-    dni_number = dni[:-1]
-    dni_letter = dni[-1]
-    palabra='TRWAGMYFPDXBNJZSQVHLCKE'
-    is_valid = True
-    if dni_number.__len__() >8 or dni_number.__len__() <7:
-        is_valid = False
-    if dni_letter != palabra[int(dni_number)%23]:
-        is_valid = False
-    return is_valid
-
-print(valid_dni(dni))
-print(valid_dni(dni2))
+    def add_cash(self, amount_to_add):
+        self.total_money+=amount_to_add
+        return f"{self.name} tiene {self.total_money}"
